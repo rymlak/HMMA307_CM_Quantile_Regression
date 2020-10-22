@@ -1,0 +1,243 @@
+\documentclass[unknownkeysallowed]{beamer}
+\usepackage[french,english]{babel}
+\usepackage{beamer_js}
+\usepackage{shortcuts_js}
+\usepackage{etex}
+\usepackage{csquotes}
+\nocite{*}
+\addbibresource{biblio.bib}
+
+% importer bibilo !!!!!!!!!!!!!! voir projet file attente
+\begin{document}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%             Headers               %%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\bigskip
+\bigskip
+\begin{center}{
+\LARGE\color{marron}
+\textbf{HMMA307 : \\ Advanced Linear Modeling}
+\textbf{ }\\
+\vspace{0.5cm}
+}
+
+\color{marron}
+\textbf{Chapter 5 : Random Anova}
+\end{center}
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbf{Fanchon Herman \ Cassandre Lepercque \ Cherif Amghar} \\
+\vspace{0.1cm}
+\url{https://github.com/fanchonherman/HMMA307_CM_Random_Anova}\\
+\vspace{0.5cm}
+Université de Montpellier \\
+\end{center}
+
+\centering
+\includegraphics[width=0.13\textwidth]{Logo}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%       PLAN      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Table of Contents}
+\tableofcontents[hideallsubsections]
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Motivation}
+\label{sec:motiv}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Motivation}
+Mixed models can be used in practice to deal with disordered data and allow us to use all of our data. Indeed, we can have different grouping factors but also small sample sizes. So, mixed models can process the data even when we have small sample sizes, structured data, and many covariates to fit.
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Statistical model}
+\label{sec:model}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Statistical model}
+\mytheorem{Model equation}
+{\[y_{ij}=\mu^*+ A_j+\varepsilon_{ij}\]}
+
+\medskip
+
+ \begin{itemize}
+        \item $\mu^* \in \bbR$, fixed effect,
+        \item $A_j \overset{\iid}{\sim} \mathcal{N}(0, \sigma_A^2), \text{ } \sigma_A^2>0, \text{ } \forall j \in \llbracket 1,J \rrbracket$, random effect,
+        \item $\varepsilon_{ij} \overset{\iid}{\sim} \mathcal{N}(0,\sigma_{\varepsilon}^2) \text{ } \sigma_{\varepsilon}^2>0, \text{ } \forall i \in \llbracket 1,I \rrbracket \text{ ,} \forall j \in \llbracket 1,J \rrbracket$ the noise,
+        \item $A_j \perp \!\!\! \perp \varepsilon_{ij} \text{ ,}\forall i,j$,
+        \item $n=\sum_{j=1}^{J} n_j$ and $n_j$ the number of observations of the modality $J$.
+    \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Esperance and covariance}
+\begin{itemize}
+    \item $\bbE[y_{ij}]=\mu^* $, 
+    \item $\bbV(y_{ij})=\sigma_A^2 + \sigma_{\varepsilon}^2$,
+    \item $\cov(y_{ij},y_{i'j'})=\sigma_A^2\delta_{jj'} + \sigma_{\varepsilon}^2\delta_{ii'}\delta_{jj'}$,
+\end{itemize}
+
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Matrix model}
+\label{sub:matrix}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%% MATRIX MODEL %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Matrix Model}
+\mytheorem{Model equation}
+{\[y=\mu^* \bbI_n+ ZA+\varepsilon\]}
+\medskip
+
+ \begin{itemize} 
+        \item $\mu^* \in \bbR$, fixed effect
+        \item $Z = \begin{bmatrix} \bbI_{C_1} \  \cdots \  \bbI_{C_J} \end{bmatrix} \in \bbR^{n \times J}$, design matrix, 
+        \item $C_1\sqcup \ \cdots \ \sqcup C_J = \llbracket 1,n \rrbracket$, classes / modalities,
+        \item $A = \begin{pmatrix}
+                    A_1 \ \cdots \ A_J
+                    \end{pmatrix}^T \in \bbR^J, \ 
+        A \sim \cN(0, \sigma_A^2 \ I_{d_J}), \text{ } \sigma_A^2>0$, random matrix,
+        \item $\varepsilon \sim \cN(0,\sigma_{\varepsilon}^2) \text{ , } \sigma_{\varepsilon}^2>0,$ the noise,
+        \item \[ ZA = \sum_{j=1}^J A_j \bbI_{C_j} \in \bbR^n. \]
+    \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%% VARIANCE CALCULATE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Variance calculate}
+
+    \begin{itemize} 
+        \item We have that, $\bbV(ZA) = \underbrace{Z}_{n\times J} \underbrace{\bbV(A)}_{J\times J} \  \underbrace{Z^T}_{J\times n} = \sigma^2_A Z Z^T \ \in \bbR^{n\times n}$, 
+        \item Where, \[ ZZ^T = \begin{bmatrix} \bbI_{C_1}\  \cdots \ \bbI_{C_J} \end{bmatrix} \begin{bmatrix}
+        \bbI_{C_1}^T\\
+        \vdots \\
+        \bbI_{C_J}^T
+        \end{bmatrix} = \sum_{j=1}^J \bbI_{C_j} \bbI_{C_j}^T, \]
+        \item Then, $\bbV(y) = \sigma^2_A ZZ^T + \sigma^2_{\varepsilon} I_{d_n}$.
+    \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%% REMINDER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Reminder for the statistical model}
+
+    \begin{itemize} 
+        \item The model : $y_{ij} = \mu^* + A_j + \varepsilon_{ij}$, 
+        \item We have that \[ \overline{y_{:j}} = \frac{1}{n_j}\sum_{i \in C_j} y_{ij}, \] 
+        \item So, $\bbV(\overline{y_{:j}}) = \sigma_
+        A^2 + \frac{\sigma_{\varepsilon}^2}{n_j} := \tau_j^2$ \ and \  $\bbE(\overline{y_{:j}}) = \mu^* $ without bias.
+    \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% MU ESTIMATOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{$\mu^*$-estimator}
+\mytheorem{Formula}
+{\[ \hat{\mu} = \sum_{j=1}^J \omega_j \overline{y_{:j}} , \hspace{0.3cm}  \text{with} \hspace{0.2cm} \omega_j \propto \frac{1}{\bbV(\overline{y_{:j}})} \text{the weighting}. \]}
+\medskip
+
+\vspace{1cm}
+\underline{\textbf{Remark :}}\\
+In balance case, we have :
+\begin{itemize}
+    \item $n_j = I$, as we already know that $n = IJ$,
+    \item So we obtain, \[ \hat{\mu}=\frac{I}{J}\sum_{j=1}^J\overline{y_{:j}}. \]
+\end{itemize}
+     
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%   THEOREM    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\visible<1->{
+\begin{alertblock}{Theorem}
+Let $X_1$,...,$X_n$ independent random variables. We suppose that $E(X_1)=....=E(X_n)= \mu^{*} $
+Among the linear unbiased estimators in $X_1$, ....,$X_n$ of $\mu^{*}$, the minimal variance estimator is denoted by $\hat{\mu}$ and is worth:
+$$\hat{\mu}=\sum_{i=1}^{n}\frac{X_{i}/var(X_{i})}{\sum_{i'=1}^{n}1/var(X_{i})}$$
+\end{alertblock}
+}
+
+\begin{itemize}\setlength{\itemsep}{5pt}
+\visible<1->{\item  \textbf{Demo}}:
+We have $$ min\limits_{(\alpha_{1},...,\alpha_{n})\in \mathbb{R}^{n}} Var(\sum\limits_{i=1}^{n}\alpha_{i}X_{i}) $$
+u.c: \sum\limits_{i=1}^{n}\alpha_{i}=1
+
+$$E(\sum\limits_{i=1}^{n}\alpha_{i}X_{i}) = \mu^{*}$$
+$$Var(\sum\limits_{i=1}^{n}\alpha_{i}X_{i})=\sum\limits_{i=1}^{n}\alpha_{i}^{2}Var(X_{i})$$
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+Minimize the last expression amounts to minimize this expression: 
+    $$ min\limits_{(\alpha_{1},...,\alpha_{n})\in \mathbb{R}^{n}} \sum\limits_{i=1}^{n}\alpha_{i}^{2}Var(X_{i}) \quad u.c \quad  \sum\limits_{i=1}^{n}\alpha_{i}=1 $$
+\begin{itemize}\setlength{\itemsep}{5pt}
+\visible<1->{\item \textbf{Lagrangian} : $$\mathcal{L}(\alpha,\lambda)=\sum\limits_{i=1}^{n}\alpha_{i}^{2}Var(X_{i}) + \lambda (\sum\limits_{i=1}^{n}\alpha_i -1) $$}
+\end{itemize}
+Resolution of the optimization system:
+\[\nabla \mathcal{L}(\hat\alpha,\hat\lambda)=0\]
+\[
+\begin{aligned}
+\begin{cases}
+&  \frac{\partial \mathcal{L}}{\partial \alpha}=0 \\
+&  \frac{\partial \mathcal{L}}{\partial \alpha_{i_0}}=0\ \forall i_0 
+\end{cases}
+\quad&\Longleftrightarrow\quad
+\begin{cases}
+&  \sum\limits_{i=1}^{n}\hat{\alpha}_i=1 \\
+&  2\hat\alpha_{i_0}Var(x_{i_0} + \hat\lambda =0, \forall{i_0}  \\
+\end{cases}\\
+& \Longleftrightarrow\quad
+\begin{cases}
+&  \hat\alpha_{i_0}=\frac{-\hat\lambda}{2Var(x_{i_0}} \\
+& \sum\limits_{i_{0}=1}^{n}\hat{\alpha}_i_{0}=1=\frac{-\hat\lambda}{2}(\sum_{i_{0}=1}^{n}\frac{1}{Var(x_{i_0})}) \\
+
+\end{cases}
+\end{aligned}
+\]
+\end{frame}
+\begin{frame}
+    Finally, $$ \hat \lambda = -2(\frac{1}{\sum_{i=1}^{n}1/var(X_{i})})$$
+    
+     $$\hat\alpha_{i_0}=\frac{\frac{1}{Var(X_i_0)}}{\sum_{i=1}^{n}1/var(X_{i})} 
+    \Longrightarrow \hat\mu = \sum_{j=1}^{J}\alpha_{j}\bar{y_{ij}}$$
+\end{frame}
+\end{document}
