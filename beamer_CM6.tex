@@ -240,4 +240,45 @@ Resolution of the optimization system:
      $$\hat\alpha_{i_0}=\frac{\frac{1}{Var(X_i_0)}}{\sum_{i=1}^{n}1/var(X_{i})} 
     \Longrightarrow \hat\mu = \sum_{j=1}^{J}\alpha_{j}\bar{y_{ij}}$$
 \end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% VARIANCE ESTIMATOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Variance Estimator}
+result for:
+\begin{itemize}\setlength{\itemsep}{5pt}
+\visible<1->{\item{$\sigma_\epsilon^2$}: $$\mathbb{E} \left[ \frac{1}{J-1}\sum\limits_{j=1}^{n}\sum\limits_{i=1}^{n_j}(y_{ij} - \overline{y_{:j}})^2\right] &= \sigma_\epsilon^2$$
+a possible estimator unbiased for $\sigma_\epsilon^2$ is:
+\\
+$$\boxed{
+\hat{\sigma}_\epsilon^2 &=   \frac{1}{J-1}\sum\limits_{j=1}^{J}\sum\limits_{i=1}^{n_j} (y_{ij} - \overline{y_{:j}})^2$$
+}
+}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}\setlength{\itemsep}{5pt}
+\visible<1->{\item{\sigma_A^2}:\n
+\\
+\n
+We have:
+\\
+$$
+\mathbb{E} \left[ \frac{1}{J-1}\sum\limits_{j=1}^{J}\sum\limits_{i=1}^{n_j}(\overline{y_{:j}} - \overline{y_n})^2\right] &= \sigma_\epsilon^2   + \frac{1}{n(J-1)}\left[n^2 - \sum\limits_{j=1}^J n_j^2\right]  \sigma_A^2
+$$
+\\
+Therefore,
+\\
+
+$$ 
+\boxed{
+\hat{\sigma}_A^2 &= \frac{\hat{S^2}- \hat{\sigma_\epsilon}^2}{n^2 - \sum\limits_{j=1}^J n_j^2}
+}
+$$
+
+\\
+ with $\hat{S^2} = \frac{1}{J-1} \sum\limits_{j=1}^{J} n_j(\overline{y_{:j}} - \overline{y_n})^2$
+}
+\end{itemize}
+\end{frame}
 \end{document}
