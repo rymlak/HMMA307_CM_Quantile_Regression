@@ -284,6 +284,17 @@ $$
 \end{itemize}
 \end{frame}
 
+\begin{frame}
+\underline{\textbf{Remarks :}}\\
+\begin{itemize}
+    \item  $n^2 >\sum \limits_{j=1}^J n_j$ ,
+   	\item Nothing guarantees that $\hat{\sigma}_A^2 \geq 0$  and otherwise the model is unsuitable for data ( where  $\sigma_A^2 \approx 0$ ) . In general, it is replaced by 0 in this case. \\
+ So $\hat{\sigma}_A^2  = max( 0, \hat{\sigma}_A^2)$
+	\item $\hat{\mu} &= \sum \limits_{j=1}^J w_j \overline{y_{:j}}$  is not an estimator because it is not a function of  data, it depends on $\sigma_A^2$ and $\sigma_\epsilon^2$.\\   We define $\tilde{\mu}$ as: \\
+$$\tilde{\mu} &= \sum\limits_{j=1}^J \tilde {w_j}\overline{y_{:j}} \text{ with } \tilde {w_j} \propto (\hat{\sigma}_A^2 + \frac{\hat{\sigma}_\epsilon^2}{n})^{-1}$$
+\end{itemsize} 
+\end{frame}
+
 
 \begin{frame}
 \begin{itemize}\setlength{\itemsep}{5pt}
