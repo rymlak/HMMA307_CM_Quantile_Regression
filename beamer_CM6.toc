@@ -1,0 +1,8 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\babel@toc {english}{}
+\defcounter {refsection}{0}\relax 
+\beamer@sectionintoc {1}{Motivation}{3}{0}{1}
+\defcounter {refsection}{0}\relax 
+\beamer@sectionintoc {2}{Statistical model}{4}{0}{2}
+\defcounter {refsection}{0}\relax 
+\beamer@sectionintoc {3}{Matrix model}{6}{0}{3}
