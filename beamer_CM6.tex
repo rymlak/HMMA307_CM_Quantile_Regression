@@ -4,6 +4,7 @@
 \usepackage{shortcuts_js}
 \usepackage{etex}
 \usepackage{csquotes}
+\usepackage{fourier}
 \nocite{*}
 \addbibresource{biblio.bib}
 
@@ -240,6 +241,7 @@ Resolution of the optimization system:
      $$\hat\alpha_{i_0}=\frac{\frac{1}{Var(X_i_0)}}{\sum_{i=1}^{n}1/var(X_{i})} 
     \Longrightarrow \hat\mu = \sum_{j=1}^{J}\alpha_{j}\bar{y_{ij}}$$
 \end{frame}
+<<<<<<< Updated upstream
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%% VARIANCE ESTIMATOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -253,10 +255,10 @@ $$\boxed{
 \hat{\sigma}_\epsilon^2 &=   \frac{1}{J-1}\sum\limits_{j=1}^{J}\sum\limits_{i=1}^{n_j} (y_{ij} - \overline{y_{:j}})^2$$
 }
 }
-\end{itemize}
-\end{frame}
+=======
 
 \begin{frame}
+<<<<<<< Updated upstream
 \begin{itemize}\setlength{\itemsep}{5pt}
 \visible<1->{\item{\sigma_A^2}:\n
 \\
@@ -281,4 +283,36 @@ $$
 }
 \end{itemize}
 \end{frame}
+=======
+
+\begin{frame}
+\begin{itemize}\setlength{\itemsep}{5pt}
+\visible<1->{\item \textbf{Vraisemblance} :
+\\
+$$\mathcal{L}(y,\mu,\hat\sigma_{A}^{2},\hat\sigma_{\epsilon}^{2}) \;  \propto \lvert V \rvert^{-1/2}\ exp(-\frac12 \left[y - \mu\bbI_{n}\right]^{T} \ V^{-1} \left[y - \mu\bbI_{n}\right])$$} \\
+
+$$-log(\mathcal{L}) = \frac12(y - \mu\bbI_{n})^{T} V^{-1}(y - \mu\bbI_{n}) + \frac12 log \lvert V \rvert + \frac{n}{2}log(2\pi)$$\\
+We want to minimize $-log(\mathcal{L})$
+
+$$\Longrightarrow\quad \underset{\mu,\sigma_{A}^{2},\sigma_{\epsilon}^{2}}{min} \frac12 (y - \mu\bbI_{n})^{T} V^{-1} (y - \mu\bbI_{n}) + \frac12 log \lvert V \rvert$$
+\end{itemize}
+\end{frame}
+
+\begin{itemize}\setlength{\itemsep}{5pt}
+\visible<1->{\item \textbf{first condition order on}} $\hat\mu$ :
+
+$$\dfrac{\partial log(\mathcal{L})}{\partial \hat\mu} = 0$$
+
+\center\Longleftrightarrow\quad $$\hat{\mu} = \dfrac{\bbI_{n}^{T}V^{-1}y}{\bbI_{n}^{T}V^{-1}\bbI_{n}}$$
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+
+\warning V is unknown
+
+\end{frame}
+
+
+>>>>>>> Stashed changes
 \end{document}
