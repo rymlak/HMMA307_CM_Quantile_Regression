@@ -255,7 +255,7 @@ $$\boxed{
 \hat{\sigma}_\epsilon^2 &=   \frac{1}{J-1}\sum\limits_{j=1}^{J}\sum\limits_{i=1}^{n_j} (y_{ij} - \overline{y_{:j}})^2$$
 }
 }
-=======
+
 
 \begin{frame}
 <<<<<<< Updated upstream
@@ -283,7 +283,7 @@ $$
 }
 \end{itemize}
 \end{frame}
-=======
+
 
 \begin{frame}
 \begin{itemize}\setlength{\itemsep}{5pt}
@@ -298,21 +298,59 @@ $$\Longrightarrow\quad \underset{\mu,\sigma_{A}^{2},\sigma_{\epsilon}^{2}}{min} 
 \end{itemize}
 \end{frame}
 
+\begin{frame}
+
 \begin{itemize}\setlength{\itemsep}{5pt}
 \visible<1->{\item \textbf{first condition order on}} $\hat\mu$ :
 
 $$\dfrac{\partial log(\mathcal{L})}{\partial \hat\mu} = 0$$
+\\
+\Longleftrightarrow\quad $$\hat{\mu} = \dfrac{\bbI_{n}^{T}V^{-1}y}{\bbI_{n}^{T}V^{-1}\bbI_{n}}$$\\
 
-\center\Longleftrightarrow\quad $$\hat{\mu} = \dfrac{\bbI_{n}^{T}V^{-1}y}{\bbI_{n}^{T}V^{-1}\bbI_{n}}$$
+\vfill
+\centering{C'est l'estimateur $\hat\mu$ qu'on avait propos\'e avant.}
+
+
+
 \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}{Alternate algorithm}
+\vspace{0.2cm}
+\warning \; V is unknown V = \sigma_{\epsilon}^{2} I_{d} +  \sigma_{A}^{2} Z Z^{T}
 
-\warning V is unknown
+\vspace{0.2cm}
+\begin{itemize}\setlength{\itemsep}{5pt}
+\visible<1->{\item \textbf{Alternate}} :
+\end{itemize}
+
+\vspace{0.3cm}
+    
+\textbf{1.} estimate $\mu$ with V_{known} ($\sigma_{A}^{2}$,$\sigma_{\epsilon}^{2}$ known and fixed)\\
+\vspace{0.5cm}
+\textbf{2.} estimate $\sigma_{\epsilon}^{2}$ with \ $\widehat\mu$ and $\sigma_{A}^{2}$ known and fixed\\
+\vspace{0.5cm}
+\textbf{3.} estimate $\sigma_{\epsilon}^{2}$ with $\widehat\mu$ and $\sigma_{A}^{2}$ known and fixed\\
+\vspace{0.5cm}
+\underline{\textbf{Remarks :}}\\
+
+
+Under the assumption of regularity of the function
+
+$$(\mu,\sigma_{\epsilon}^{2},\sigma_{A}^{2}) \mapsto -log(\mathcal{L})$$
+
+then the alternate minimization algorithm converges towards a critical point.
+Finally if the function to be optimized is more convex, we obtain a global minimum.
+
+
+
+
+
+
+
+
 
 \end{frame}
 
 
->>>>>>> Stashed changes
 \end{document}
