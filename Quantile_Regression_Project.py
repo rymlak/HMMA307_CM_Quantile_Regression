@@ -20,23 +20,24 @@ import time
 ################################
 # Download datasets
 #################################
+
 url = "http://josephsalmon.eu/enseignement/datasets/Mesure_journaliere_Region_Occitanie_Polluants_Principaux.csv"
 path_target = "datasets/Mesure_journaliere_Region_Occitanie_Polluants_Principaux.csv"
 download(url, path_target, replace=True)
+occ_raw = pd.read_csv(path_target)
+occ_raw['date'] = pd.to_datetime(occ_raw['date_debut']).dt.to_period('M')
 
-
-data = pd.read_csv(path_target)
-data['date'] = pd.to_datetime(occ['date_debut']).dt.to_period('M')
+occ = occ_raw.dropna()
 
 
 ville = 'MONTPELLIER', 'TOULOUSE', 'AGDE'
-drm = occ[occ['nom_com'].isin(ville)]
-drm = df[df['polluant'] == 'O3']
+df = occ[occ['nom_com'].isin(ville)]
+df = df[df['polluant'] == 'O3']
 
 
-drm.date.unique()
-drm = drm[drm.date == '2018-07']
-drm = drm[['nom_com', 'valeur_originale']]
+df.date.unique()
+df = df[df.date == '2018-07']
+df = df[['nom_com', 'valeur_originale']]
 
 ### the cities recoded into qualitative variables
 
@@ -72,6 +73,7 @@ X = X
 b = cvx.Variable(len(X[1]))
 alpha = cvx.Parameter()
 
+error = 0
 for i in range(len(X)):
     residuals = Y[i] - b.T * X[i]
     error += 0.5 * cvx.abs(residuals) + (alpha - 0.5) * residuals
@@ -82,10 +84,10 @@ problem = cvx.Problem(objective)
 ### Solve quantile regression for different values of  𝛼
 # 𝛼={0.01,0.1,…,0.9,0.99}
 
-fits = np.zeros((len(alphas), len(X)))
-residuals_value = np.zeros((len(alphas), len(X)))
 alphas = np.linspace(0.0, 1, 11)
 alphas = np.r_[0.01, alphas[1:-1], 0.99]
+fits = np.zeros((len(alphas), len(X)))
+residuals_value = np.zeros((len(alphas), len(X)))
 
 start_time_1 = time.time()  
 for k,a in enumerate(alphas):
@@ -104,7 +106,7 @@ np.unique(fits, axis=1)
 #################################
 
 start = time.time()
-results = smf.quantreg('valeur_originale ~ nom_com', drm)
+results = smf.quantreg('valeur_originale ~ nom_com', df)
 res = results.fit(q=.5)
 end = time.time()
 print("the execution time with the implementation obtained with package statsmodels : ",(end - start))
