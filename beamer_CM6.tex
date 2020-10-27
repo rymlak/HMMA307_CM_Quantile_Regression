@@ -241,24 +241,25 @@ Resolution of the optimization system:
      $$\hat\alpha_{i_0}=\frac{\frac{1}{Var(X_i_0)}}{\sum_{i=1}^{n}1/var(X_{i})} 
     \Longrightarrow \hat\mu = \sum_{j=1}^{J}\alpha_{j}\bar{y_{ij}}$$
 \end{frame}
-<<<<<<< Updated upstream
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%% VARIANCE ESTIMATOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Variance Estimator}
 result for:
 \begin{itemize}\setlength{\itemsep}{5pt}
-\visible<1->{\item{$\sigma_\epsilon^2$}: $$\mathbb{E} \left[ \frac{1}{J-1}\sum\limits_{j=1}^{n}\sum\limits_{i=1}^{n_j}(y_{ij} - \overline{y_{:j}})^2\right] &= \sigma_\epsilon^2$$
+\visible<1->{\item{$\sigma_\epsilon^2$}}: $$\mathbb{E} \left[ \frac{1}{J-1}\sum\limits_{j=1}^{n}\sum\limits_{i=1}^{n_j}(y_{ij} - \overline{y_{:j}})^2\right] &= \sigma_\epsilon^2$$
 a possible estimator unbiased for $\sigma_\epsilon^2$ is:
 \\
 $$\boxed{
-\hat{\sigma}_\epsilon^2 &=   \frac{1}{J-1}\sum\limits_{j=1}^{J}\sum\limits_{i=1}^{n_j} (y_{ij} - \overline{y_{:j}})^2$$
-}
-}
+\hat{\sigma}_\epsilon^2 &=   \frac{1}{J-1}\sum\limits_{j=1}^{J}\sum\limits_{i=1}^{n_j} (y_{ij} - \overline{y_{:j}})^2}$$
 
+\end{itemize}
+\end{frame}
 
 \begin{frame}
-<<<<<<< Updated upstream
+
 \begin{itemize}\setlength{\itemsep}{5pt}
 \visible<1->{\item{\sigma_A^2}:\n
 \\
@@ -291,14 +292,33 @@ $$
    	\item Nothing guarantees that $\hat{\sigma}_A^2 \geq 0$  and otherwise the model is unsuitable for data ( where  $\sigma_A^2 \approx 0$ ) . In general, it is replaced by 0 in this case. \\
  So $\hat{\sigma}_A^2  = max( 0, \hat{\sigma}_A^2)$
 	\item $\hat{\mu} &= \sum \limits_{j=1}^J w_j \overline{y_{:j}}$  is not an estimator because it is not a function of  data, it depends on $\sigma_A^2$ and $\sigma_\epsilon^2$.\\   We define $\tilde{\mu}$ as: \\
-$$\tilde{\mu} &= \sum\limits_{j=1}^J \tilde {w_j}\overline{y_{:j}} \text{ with } \tilde {w_j} \propto (\hat{\sigma}_A^2 + \frac{\hat{\sigma}_\epsilon^2}{n})^{-1}$$
+$$\tilde{\mu} &= \sum\limits_{j=1}^J \tilde {w_j}\overline{y_{:j}} \text{ with } \tilde {w_j} \propto \left(\hat{\sigma}_A^2 + \frac{\hat{\sigma}_\epsilon^2}{n}\right)^{-1}$$
 \end{itemsize} 
 \end{frame}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% MAXIMUM LIKELIHOOD %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Another approach: Maximum Likelihood}
+\underline{\textbf{Reminder of model :}}\\
+\begin{itemize}
+        \item Equation: $y=\mu^* \bbI_n+ ZA+\varepsilon$
+        \item $Z = \begin{bmatrix} \bbI_{C_1} \  \cdots \  \bbI_{C_J} \end{bmatrix} \in \bbR^{n \times J}$
+        \item $A = \begin{pmatrix}
+                    A_1 \ \cdots \ A_J
+                    \end{pmatrix}^T \in \bbR^J, \ 
+        A \sim \cN(0, \sigma_A^2 \ I_{d_J}), \text{ } \sigma_A^2>0$, random matrix,
+        \item $\varepsilon \sim \cN(0,\sigma_{\varepsilon}^2) \text{ , } \sigma_{\varepsilon}^2>0,$ the noise.
+        \item And
+\end{itemize}\\
+\vspace{0.3cm}
+$$\boxed{ y \sim\cN \left( \mu^* \bbI_n \ ,\sigma^2_A ZZ^T + \sigma^2_{\varepsilon} I_{d_n}\right) } $$
+\end{frame}
+
 \begin{frame}
 \begin{itemize}\setlength{\itemsep}{5pt}
-\visible<1->{\item \textbf{Vraisemblance} :
+\visible<1->{\item \textbf{Likelihood} :
 \\
 $$\mathcal{L}(y,\mu,\hat\sigma_{A}^{2},\hat\sigma_{\epsilon}^{2}) \;  \propto \lvert V \rvert^{-1/2}\ exp(-\frac12 \left[y - \mu\bbI_{n}\right]^{T} \ V^{-1} \left[y - \mu\bbI_{n}\right])$$} \\
 
@@ -308,6 +328,7 @@ We want to minimize $-log(\mathcal{L})$
 $$\Longrightarrow\quad \underset{\mu,\sigma_{A}^{2},\sigma_{\epsilon}^{2}}{min} \frac12 (y - \mu\bbI_{n})^{T} V^{-1} (y - \mu\bbI_{n}) + \frac12 log \lvert V \rvert$$
 \end{itemize}
 \end{frame}
+
 
 \begin{frame}
 
@@ -324,9 +345,6 @@ This is the estimator $\hat\mu$ that we proposed before.\\
 \underline{\textbf{Remark :}}\\
 \vspace{0.2cm}
 Optimization in $\sigma_{A}^{2}$ and $\sigma_{\epsilon}^{2}$ doesn't admit an explicit function.
-
-
-
 \end{itemize}
 \end{frame}
 
@@ -359,5 +377,7 @@ Finally if the function to be optimized is more convex, we obtain a global minim
 \end{frame}
 
 
-\end{document}
 
+
+
+\end{document}
