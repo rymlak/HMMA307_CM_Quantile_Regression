@@ -19,6 +19,11 @@ import statsmodels.formula.api as smf
 import time
 import seaborn as sns
 from sklearn.linear_model import Ridge
+from numpy.lib.function_base import quantile
+import random
+import statsmodels.formula.api as smf
+import statsmodels.api as sm 
+import scipy.stats as stat
 
 ################################
 # Download datasets
@@ -32,22 +37,24 @@ download(url, path_target, replace=True)
 occ_raw = pd.read_csv(path_target)
 occ_raw['date'] = pd.to_datetime(occ_raw['date_debut']).dt.to_period('M')
 
-occ = occ_raw.dropna()
+
+data = pd.read_csv(path_target)
+data['date'] = pd.to_datetime(data['date_debut']).dt.to_period('M')
 
 ## Cities Data Visualisation 
 plt.figure()
-occ["nom_com"].value_counts().plot.pie(autopct="%.1f%%")
+occ_raw["nom_com"].value_counts().plot.pie(autopct="%.1f%%")
 plt.title("Cities Pie plot.")
 plt.show()
 
 
 ## Pollulants Data Visualisation
-sns.countplot(occ['polluant'])
+sns.countplot(occ_raw['polluant'])
 plt.title("pollutants Bar chart")
 
 ## We isolate the cities we are interested in a list "ville" and thiers Ozone readings from July 2018
 ville = 'MONTPELLIER', 'TOULOUSE', 'AGDE'
-df = occ[occ['nom_com'].isin(ville)]
+df = occ_raw[occ_raw['nom_com'].isin(ville)]
 df = df[df['polluant'] == 'O3']
 
 
@@ -113,9 +120,9 @@ for i in range(len(X)):
 interval = time.time() - start_time
 print("Prediction results with cvxpy package : ",np.unique(fits))
 
-################################
+###############################################
 # Implementation with statsmodels package
-#################################
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 start = time.time()
 results = smf.quantreg('valeur_originale ~ nom_com', df)
@@ -127,7 +134,7 @@ print("Prediction results with package statsmodels : ",prediction)
 
 ################################
 # Execution time Comparison
-#################################
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 print("the execution time with the implementation obtained with cvxpy package : ",interval)
 print("the execution time with the implementation obtained with package statsmodels : ",(end - start))
 
@@ -136,7 +143,7 @@ print("the execution time with the implementation obtained with package statsmod
 
 ################################
 # COMPARISON WITH RIDGE
-#################################
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ###  Evolution of the Ridge estimator graphically
 
@@ -177,15 +184,89 @@ def iteration_ridge_alpha(logalpha):
     plt.legend(loc='upper left', bbox_to_anchor=(1., .9))
     plt.tight_layout()
     plt.title('Evolution de l estimateur Ridge suivant la valeur \n'
-              'du critère de pénalisation alpha')
+              'du critï¿½re de pï¿½nalisation alpha')
 
 
 import ipywidgets as ip
 ip.interact(iteration_ridge_alpha, logalpha=(-10, 10, 0.1))
 
-## Nous avons fais une régression médiane sur variables catégorielles
+## Nous avons fais une rï¿½gression mï¿½diane sur variables catï¿½gorielles
 
 # On remarque que les estimations de Rigde se trouvent toutes autour de la moyenne.
-# Pour Lambda égale à zéro l'estimateur OLS donne la moyenne des observation.
-# Notre régression médiane donne la médiane des observations.
-# Cela explique des résultats presque similaires.
+# Pour Lambda ï¿½gale ï¿½ zï¿½ro l'estimateur OLS donne la moyenne des observation.
+# Notre rï¿½gression mï¿½diane donne la mï¿½diane des observations.
+# Cela explique des rï¿½sultats presque similaires.
+
+
+
+
+###########################################################
+# Reproduction of Figures 1.6 and 1.7 of Koenker's book
+###########################################################
+
+
+# set up
+
+n = 60
+sigma= 1
+X = np.linspace(1,10, n)
+epsilon = sigma*np.random.randn(n)
+y = X + epsilon
+
+data = pd.DataFrame( {"target": y , "features" : X})
+
+
+quantiles = [0.05, 0.25, 0.5, 0.75, 0.95]
+
+# Fig 1.6 for Koenker's Book
+
+fig , ax = plt.subplots(1,5, sharey=True)
+plt.suptitle("Quantile Regression for 5 quantiles")
+
+for idx, q in enumerate(quantiles):
+    
+    model = smf.quantreg('target ~ features', data).fit(q)
+    reg_line = model.params['Intercept'] + model.params['features'] * X 
+    ax[idx].scatter(X, y, label="data")
+    ax[idx].plot( X, reg_line, label= "q =" + str(q), color= "black")
+
+true_line = [stat.norm.ppf(q, loc=0, scale= sigma^2) + X for q in quantiles]
+
+for i in range(5):
+    dic = {0: 'True line for 5 quantiles'}
+    for j in range(5):
+        ax[i].plot(X, true_line[j], label=dic[0], color='red', alpha = 0.5)
+        dic[0] = "__noname__"
+    ax[i].legend()
+plt.show()
+
+# Fig 1.7 for Koenker's Book
+X_2 = X*X
+eps_2 = np.random.randn(n)
+y2 = 1+X +X_2 +eps_2
+
+plt.plot(X,y2,'ro')
+plt.show()
+
+data2 = pd.DataFrame( {"target": y2 , "features" : X, 'features_squared': X_2})
+
+
+fig , ax = plt.subplots(1,5, sharey=True)
+plt.suptitle("Quantile Regression for 5 quantiles")
+
+for idx, q in enumerate(quantiles):
+    
+    model2 = smf.quantreg('target ~ features + features_squared', data2).fit(q)
+    reg_line2 = model2.params['Intercept'] + model2.params['features'] * X + model2.params['features_squared'] * X_2
+    ax[idx].scatter(X, y2, label="data")
+    ax[idx].plot( X, reg_line2, label= "q =" + str(q), color= "black")
+
+true_line2 = [stat.norm.ppf(q, loc=0, scale= sigma**2) * X_2 + X +1 for q in quantiles]
+
+for i in range(5):
+    dic = {0: 'True line for 5 quantiles'}
+    for j in range(5):
+        ax[i].plot(X, true_line2[j], label=dic[0], color='red', alpha = 0.5)
+        dic[0] = "__noname__"
+    ax[i].legend()
+plt.show()
