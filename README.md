@@ -16,6 +16,6 @@ For the drafting of lesson number 7, we proceeded as follows:
 - Yani of the Maximum Likelihood part
 - Ryma of Quantile Regression( Beamer + images )
 
-## link for the previous Beamer:
+## Link for the previous Beamer:
 
 https://github.com/fanchonherman/HMMA307_CM_Random_Anova
