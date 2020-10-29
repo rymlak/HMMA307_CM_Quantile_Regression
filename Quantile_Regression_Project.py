@@ -14,13 +14,17 @@ import numpy as np
 import pandas as pd
 import cvxpy as cvx
 from download import download
+import matplotlib.pyplot as plt
 import statsmodels.formula.api as smf
 import time
+import seaborn as sns
 
 ################################
 # Download datasets
 #################################
 
+## we were inspired by Joly Julien , Mohamed Sahardid et Anas El Benna's code 
+## to import the dataset and use it later to compare thiers results with ours.
 url = "http://josephsalmon.eu/enseignement/datasets/Mesure_journaliere_Region_Occitanie_Polluants_Principaux.csv"
 path_target = "datasets/Mesure_journaliere_Region_Occitanie_Polluants_Principaux.csv"
 download(url, path_target, replace=True)
@@ -29,7 +33,18 @@ occ_raw['date'] = pd.to_datetime(occ_raw['date_debut']).dt.to_period('M')
 
 occ = occ_raw.dropna()
 
+## Cities Data Visualisation 
+plt.figure()
+occ["nom_com"].value_counts().plot.pie(autopct="%.1f%%")
+plt.title("Cities Pie plot.")
+plt.show()
 
+
+## Pollulants Data Visualisation
+sns.countplot(occ['polluant'])
+plt.title("pollutants Bar chart")
+
+## We isolate the cities we are interested in a list "ville" and thiers Ozone readings from July 2018
 ville = 'MONTPELLIER', 'TOULOUSE', 'AGDE'
 df = occ[occ['nom_com'].isin(ville)]
 df = df[df['polluant'] == 'O3']
@@ -39,9 +54,12 @@ df.date.unique()
 df = df[df.date == '2018-07']
 df = df[['nom_com', 'valeur_originale']]
 
-### the cities recoded into qualitative variables
+## Boxplot of the chosen cities
+sns.boxplot('nom_com', 'valeur_originale', data=df)
+plt.title("Boxplot of the chosen Cities")
 
 
+## the cities recoded into qualitative variables
 valeur_o3 = []
 len_villes = []
 
@@ -71,7 +89,7 @@ Y = valeur_o3
 X = X
 
 b = cvx.Variable(len(X[1]))
-alpha = cvx.Parameter()
+alpha = cvx.Parameter(value=0.5)
 
 error = 0
 for i in range(len(X)):
@@ -81,25 +99,18 @@ for i in range(len(X)):
 objective = cvx.Minimize(error)
 problem = cvx.Problem(objective)
 
-### Solve quantile regression for different values of  𝛼
-# 𝛼={0.01,0.1,…,0.9,0.99}
 
-alphas = np.linspace(0.0, 1, 11)
-alphas = np.r_[0.01, alphas[1:-1], 0.99]
-fits = np.zeros((len(alphas), len(X)))
-residuals_value = np.zeros((len(alphas), len(X)))
+## Solve quantile regression for 𝛼 = 0.5
+fits = np.zeros(len(X))
 
-start_time_1 = time.time()  
-for k,a in enumerate(alphas):
-    alpha.value = a
-    problem.solve(solver="ECOS")
+start_time= time.time()  
+problem.solve(solver="ECOS")
     
-    for i in range(len(X)):
-        fits[k,i] = (X[i].T*b ).value
-        residuals_value[k,i] = (Y[i] - (X[i].T*b)).value
+for i in range(len(X)):
+    fits[i] = (X[i].T*b ).value
 
-interval_1 = time.time() - start_time_1
-np.unique(fits, axis=1)
+interval = time.time() - start_time
+print("Median prediction obtained with cvxpy package : ",np.unique(fits))
 
 ################################
 # Implementation with statsmodels package
@@ -109,7 +120,12 @@ start = time.time()
 results = smf.quantreg('valeur_originale ~ nom_com', df)
 res = results.fit(q=.5)
 end = time.time()
-print("the execution time with the implementation obtained with package statsmodels : ",(end - start))
 
 prediction= (np.unique(res.predict(df[['nom_com']])))
-print(prediction)
+print("Median prediction obtained with package statsmodels : ",prediction)
+
+################################
+# Execution time Comparison
+#################################
+print("the execution time with the implementation obtained with cvxpy package : ",interval)
+print("the execution time with the implementation obtained with package statsmodels : ",(end - start))
