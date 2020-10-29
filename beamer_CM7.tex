@@ -38,7 +38,7 @@
 \begin{center}
 \textbf{Yani Bouaffad \ Ryma Lakehal \ Loïc Sauton} \\
 \vspace{0.1cm}
-\url{https://github.com/fanchonherman/HMMA307_CM_Quantile_Regression}\\
+\url{https://github.com/ybouaffad/HMMA307_CM_Quantile_Regression}\\
 \vspace{0.5cm}
 Université de Montpellier \\
 \end{center}
@@ -48,6 +48,24 @@ Université de Montpellier \\
 
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\AtBeginSection[]
+{
+\begin{frame}<beamer>{Table of Contents}
+\tableofcontents[currentsubsection,
+    hideothersubsections,
+    sectionstyle=show/shaded,
+]
+\end{frame}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+\label{sec:introdcution}
+
 \begin{frame}{Introduction}
 \vspace{0.2cm}
 Classical linear regression estimates the mean response of the dependent variable dependent on the independent variables. There are many cases, such as skewed data, multimodal data, or data with outliers, when the behavior at the conditional mean fails to fully capture the patterns in the data.
@@ -55,15 +73,28 @@ Classical linear regression estimates the mean response of the dependent variabl
 \\
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Reminder : Median/Quantiles}
+\label{sec:Reminder : Median/Quantiles}
+\subsection{Median}
+\label{sub:Median}
 
 \begin{frame}{Reminder : Median/Quantiles}
 
+\vspace{0.4cm}
 
-\begin{alertblock}{Definition}
+\mytheorem{Median Definition}
+{
 Let $y_1, \dots , y_n \in \mathbb{R} $, we have :
 $$Med_{n}(y_1,\dots,y_n)\in \underset{ \mu \in \mathbb{R}} \argmin \quad \frac{1}{n} \sum_{i=1}^n |y_i-\mu|$$
-\end{alertblock}
+}
+
+\vspace{0.25cm}
+
 
 \begin{figure}[H]
     \centering
@@ -73,6 +104,11 @@ $$Med_{n}(y_1,\dots,y_n)\in \underset{ \mu \in \mathbb{R}} \argmin \quad \frac{1
 \end{figure}
 
 \end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}
 \begin{figure}[H]
@@ -87,6 +123,11 @@ for 2 observations $y_1; y_2$ all points between $y_1$ and $y_2$ are global mini
 for 3 observations $y_1; y_2; y_3$ the optimization function admits a unique global minimizer
 
 \end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}
  The optimization problem depends on the parity of the points :\\
@@ -110,18 +151,27 @@ The function f is a convex function. So there will be an optimal solution.\\
 Our optimization function is not always smooth, this implies the non-existence of the gradient in the critical points.
 
 \end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Quantiles}
+\label{sub:Quantiles}
 \begin{frame}{Quantile}
   \framesubtitle{Sous-sections masquées}
-\begin{alertblock}{Definition}
+\mytheorem{Quantiles Definition}
+{
 Let $Y$ be a real valued random variable with cumulative distribution function $ F_{Y}(y)=P(Y\leq y)$.
 The $\alpha$-th quantile of $Y$ is given by :
 $$
  Q_{Y}(\alpha )=F_{Y}^{-1}(\alpha )=\inf \left\{y:F_{Y}(y)\geq \alpha \right\}
 $$
 where  $\alpha \in ]0,1[$
+}
 
-\end{alertblock}
+\vspace{0.25cm}
 
 \underline{\textbf{Remark :}}\\
 let define the loss function $l_{\alpha}$ : 
@@ -139,12 +189,17 @@ $$\begin{array}{l|rcl}
 $$\quad  l_{\alpha}:x \rightarrow \alpha |x|~  \mathds{1}_{x >0} + (1-\alpha) |x|~ \mathds{1}_{x \leqslant 0}$$
 
 \end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}{Quantiles}
 A specific quantile can be found by minimizing the expected loss of $Y-\mu$ with respect to $\mu$  \\
 
 $$
-\underset {\mu}{\min }E(l _{\alpha }(Y-\mu))= {\underset {\mu}{\min }} \left\{(\alpha -1)\int _{-\infty }^{\mu}(y-\mu)dF_{Y}(y)+\alpha \int _{\mu}^{\infty }(y-\mu)dF_{Y}(y)\right\}.
+\underset {\mu \in \mathbb{R}}{\min }E(l _{\alpha }(Y-\mu))= {\underset {\mu \in \mathbb{R}}{\min }} \left\{(\alpha -1)\int _{-\infty }^{\mu}(y-\mu)dF_{Y}(y)+\alpha \int _{\mu}^{\infty }(y-\mu)dF_{Y}(y)\right\}.
 $$
 
 This can be shown by setting the derivative of the expected loss function to $0$ and letting $q_{\alpha }$ be the solution of
@@ -163,8 +218,13 @@ $$
 Hence $ q_{\alpha}$is $\alpha$ th quantile of the random variable Y.
 
 \end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Quantile regression}
+\label{sec:Quantile regression}
 
 \begin{frame}{Quantile regression}
 $y_{1},\dots, y_{n}\in \mathbb{R}$ observations, $x_{1},\dots, x_{n}\in \mathbb{R}^p$ explanatory variables \\
@@ -180,6 +240,11 @@ $y_{1},\dots, y_{n}\in \mathbb{R}$ observations, $x_{1},\dots, x_{n}\in \mathbb{
    
 \end{itemize}   
 \end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 \begin{frame}{Quantile regression}
@@ -188,16 +253,24 @@ $y_{1},\dots, y_{n}\in \mathbb{R}$ observations, $x_{1},\dots, x_{n}\in \mathbb{
 \underline{\textbf{Remark :}}
 $$ \epsilon_i = y_i - x_i^T \beta^{\alpha}$$
 
-\begin{alertblock}{Definition}
+\mytheorem{Definition}
+{
 Let $\alpha \in ]0,1[$. The $\alpha$th quantile regression estimator $\hat{\beta}^{\alpha}$ of $\beta$
 $$\hat{\beta}^{\alpha}\in \operatorname*{argmin}_{\beta\in \mathds{R}^p}\dfrac{1}{n}\sum_{i=1}^{n}l_{\alpha}(y_{i}-x_{i}^T \beta)$$
 $$X= \begin{bmatrix} x_{1}^T \\ .\\.\\.\\
 x_{n}^T
 \end{bmatrix} \in \mathds{R}^{n*p}$$
+}
 
-\end{alertblock}
+\vspace{0.25cm}
 \end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Advantages}
+\label{sec:Advantages}
 \begin{frame}{Advantages}
 
 \begin{itemize}
