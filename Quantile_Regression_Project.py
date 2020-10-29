@@ -200,9 +200,8 @@ import ipywidgets as ip
 ip.interact(iteration_ridge_alpha, logalpha=(-10, 10, 0.1))
 
 ## Nous avons fais une régression médiane sur variables catégorielles
-## La Régression Ridge est quant à elle sur variables continues
 
 # On remarque que les estimations de Rigde se trouvent toutes autour de la moyenne.
-# Pour Lambda égale à zéro l'estimateur OLS donne la moyenne des observation. Notre régression médiane 
-# donne la médiane des observations.
+# Pour Lambda égale à zéro l'estimateur OLS donne la moyenne des observation.
+# Notre régression médiane donne la médiane des observations.
 # Cela explique des résultats presque similaires.
