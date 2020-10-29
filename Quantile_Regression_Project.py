@@ -1,5 +1,5 @@
 """
-@authors: Yani Bouaffad, Ryma Lakehal and LoÃ¯c Sauton
+@authors: Yani Bouaffad, Ryma Lakehal and Loïc Sauton
 In short: Quantile regression using CVXCP package.
 """
 
@@ -101,33 +101,17 @@ objective = cvx.Minimize(error)
 problem = cvx.Problem(objective)
 
 
-### Solve quantile regression for different values of  ğ¼
-# ğ¼={0.01,0.1,â¦,0.9,0.99}
-
-
 ## Solve quantile regression for 𝛼 = 0.5
 fits = np.zeros(len(X))
 
 start_time= time.time()  
-
 problem.solve(solver="ECOS")
-
-for k,a in enumerate(alpha):
-    alpha.value = a
-    problem.solve(solver="ECOS")
-
     
 for i in range(len(X)):
     fits[i] = (X[i].T*b ).value
 
-
 interval = time.time() - start_time
-print("Median prediction obtained with cvxpy package : ",np.unique(fits))
-
-
-interval= time.time() - start_time
-print(np.unique(fits, axis=1))
-print("the execution time with the implementation obtained with package cvxpy : ",interval)
+print("Prediction results with cvxpy package : ",np.unique(fits))
 
 ################################
 # Implementation with statsmodels package
@@ -139,7 +123,7 @@ res = results.fit(q=.5)
 end = time.time()
 
 prediction= (np.unique(res.predict(df[['nom_com']])))
-print("Median prediction obtained with package statsmodels : ",prediction)
+print("Prediction results with package statsmodels : ",prediction)
 
 ################################
 # Execution time Comparison
@@ -147,8 +131,8 @@ print("Median prediction obtained with package statsmodels : ",prediction)
 print("the execution time with the implementation obtained with cvxpy package : ",interval)
 print("the execution time with the implementation obtained with package statsmodels : ",(end - start))
 
-print(prediction)
-
+# the implementation with the statsmodels package is about 15 to 20 times better than 
+# the implementation with the CVXPY package.
 
 ################################
 # COMPARISON WITH RIDGE
@@ -193,15 +177,15 @@ def iteration_ridge_alpha(logalpha):
     plt.legend(loc='upper left', bbox_to_anchor=(1., .9))
     plt.tight_layout()
     plt.title('Evolution de l estimateur Ridge suivant la valeur \n'
-              'du critère de pénalisation alpha')
+              'du crit�re de p�nalisation alpha')
 
 
 import ipywidgets as ip
 ip.interact(iteration_ridge_alpha, logalpha=(-10, 10, 0.1))
 
-## Nous avons fais une régression médiane sur variables catégorielles
+## Nous avons fais une r�gression m�diane sur variables cat�gorielles
 
 # On remarque que les estimations de Rigde se trouvent toutes autour de la moyenne.
-# Pour Lambda égale à zéro l'estimateur OLS donne la moyenne des observation.
-# Notre régression médiane donne la médiane des observations.
-# Cela explique des résultats presque similaires.
+# Pour Lambda �gale � z�ro l'estimateur OLS donne la moyenne des observation.
+# Notre r�gression m�diane donne la m�diane des observations.
+# Cela explique des r�sultats presque similaires.
